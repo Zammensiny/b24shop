@@ -1,0 +1,43 @@
+# dir
+/thumb/
+/upload/
+/.well-known/*
+/bitrix/php_interface/include/kda.exportexcel/logs/*
+/local/files/*
+/bitrix/php_interface/include/kda.importexcel/logs/*
+/local/php_interface/include/classes/seo/backlinks/*
+/local/logs/*
+/library/
+/vendor/
+/dist/
+.idea
+/bitrix/
+
+# files
+**/.idea/deployment.xml
+local/php_interface/.update.not.change_run.file
+/images
+/.htsecure
+/restore.php
+/tra.php
+/debug*.log
+/sitemap*.xml
+/VK_112.txt
+/yandex*.html
+/google*.html
+/mailru*.html
+/*.jpg
+/*.png
+/w.php
+/*.csv
+/*.txt
+/__bx_log.log
+/robots.txt
+/.env
+/urlrewrite.php
+/bitrix
+/upload
+
+# file: ~/.gitignore_global
+.DS_Store
+.idea
