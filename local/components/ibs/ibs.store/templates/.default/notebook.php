@@ -13,13 +13,15 @@ $APPLICATION->SetTitle("Детальная карточка ноутбука - "
 
 Extension::load("ui.bootstrap4");
 
-$toSefFolder = new \Bitrix\UI\Buttons\Button([
+$rollbackButton = new \Bitrix\UI\Buttons\Button([
     "color" => \Bitrix\UI\Buttons\Color::PRIMARY,
-    "click" => new \Bitrix\UI\Buttons\JsHandler("toSefFolder"),
-    "text" => "В каталог"
+    "click" => new \Bitrix\UI\Buttons\JsHandler(
+        "rollback"
+    ),
+    "text" => "Назад"
 ]);
 
-\Bitrix\UI\Toolbar\Facade\Toolbar::addButton($toSefFolder);
+\Bitrix\UI\Toolbar\Facade\Toolbar::addButton($rollbackButton);
 ?>
 
 <div class="container mt-4">

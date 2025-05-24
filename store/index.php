@@ -1,5 +1,11 @@
 <?php
+
+/**
+ * @global  \CMain $APPLICATION
+ */
+
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
+
 $APPLICATION->SetTitle("Магазин ноутбуков");
 
 $APPLICATION->IncludeComponent(
@@ -12,7 +18,7 @@ $APPLICATION->IncludeComponent(
             'index' => 'index.php',
             "brand" => "#BRAND#/",
             "model" => "#BRAND#/#MODEL#/",
-            "notebook" => "detail/#NOTEBOOK#",
+            "notebook" => "#BRAND#/#MODEL#/#NOTEBOOK#/",
         ]
     ]
 );

@@ -13,12 +13,10 @@ class IbsStoreComponent extends \CBitrixComponent
     protected array $httpVars = [];
     protected string $page = '';
     protected string $path = '';
-
     protected array $resultData = [];
     protected array $resultSort = [];
     protected object $resultNav;
     public string $gridId = '';
-
     protected array $columnsMap = [
         'index' => [
             ['id' => 'ID', 'name' => 'ID', 'sort' => 'ID', 'default' => true],
@@ -45,6 +43,9 @@ class IbsStoreComponent extends \CBitrixComponent
             'model' => 'ibs_grid_store_model',
             default => 'ibs_grid_store',
         };
+
+        $this->arResult['GRID_ID'] = $this->gridId;
+
     }
 
     /*-- Сортировка --*/
@@ -62,46 +63,32 @@ class IbsStoreComponent extends \CBitrixComponent
     {
         $gridOptions = new Options($this->gridId);
         $navParams = $gridOptions->GetNavParams();
-        $pageSize = $navParams['nPageSize'] ?? 20;
-
+        $pageSize = $navParams['nPageSize'] ?? 3;
         $nav = new PageNavigation($this->gridId);
         $nav->allowAllRecords(true)
             ->setPageSize($pageSize)
             ->initFromUri();
-
         $this->resultNav = $nav;
     }
 
     /*-- Колонки --*/
 
-    public function getColumns(): array
+    public function getColumns(): void
     {
-        return $this->columnsMap[$this->page] ?? [];
+        $columns = $this->columnsMap[$this->page] ?? [];
+        $this->arResult['COLUMNS'] = $columns;
     }
 
     /*-- Данные --*/
 
-    protected function fetchAll(string $tableClass, array $params): array
-    {
-        $result = $tableClass::getList($params);
-        $data = [];
-        while ($item = $result->fetch()) {
-            $data[] = $item;
-        }
-        return $data;
-    }
-
-    protected function fetchOne(string $tableClass, array $params): ?array
-    {
-        return $tableClass::getList($params)->fetch() ?: null;
-    }
-
     public function getData(): void
     {
+        $fetchLib = new Ibs\Shop\Common\Fetch;
+
         switch ($this->page) {
             case 'index':
 
-                $this->resultData = $this->fetchAll(\Ibs\Shop\Model\ManufacturerTable::class, [
+                $this->resultData = $fetchLib->fetchAll(\Ibs\Shop\Model\ManufacturerTable::class, [
                     'select' => ['ID', 'NAME'],
                     'order' => $this->resultSort,
                 ]);
@@ -113,7 +100,7 @@ class IbsStoreComponent extends \CBitrixComponent
                     $this->resultData = [];
                     break;
                 }
-                $manufacturer = $this->fetchOne(\Ibs\Shop\Model\ManufacturerTable::class, [
+                $manufacturer = $fetchLib->fetchOne(\Ibs\Shop\Model\ManufacturerTable::class, [
                     'filter' => ['=NAME' => $this->httpVars['BRAND']],
                     'select' => ['ID'],
                 ]);
@@ -123,7 +110,7 @@ class IbsStoreComponent extends \CBitrixComponent
                     break;
                 }
 
-                $this->resultData = $this->fetchAll(\Ibs\Shop\Model\ModelTable::class, [
+                $this->resultData = $fetchLib->fetchAll(\Ibs\Shop\Model\ModelTable::class, [
                     'filter' => ['=MANUFACTURER_ID' => $manufacturer['ID']],
                     'select' => ['ID', 'NAME'],
                     'order' => $this->resultSort,
@@ -137,7 +124,7 @@ class IbsStoreComponent extends \CBitrixComponent
                     break;
                 }
 
-                $manufacturer = $this->fetchOne(\Ibs\Shop\Model\ManufacturerTable::class, [
+                $manufacturer = $fetchLib->fetchOne(\Ibs\Shop\Model\ManufacturerTable::class, [
                     'filter' => ['=NAME' => $this->httpVars['BRAND']],
                     'select' => ['ID'],
                 ]);
@@ -147,7 +134,7 @@ class IbsStoreComponent extends \CBitrixComponent
                     break;
                 }
 
-                $model = $this->fetchOne(\Ibs\Shop\Model\ModelTable::class, [
+                $model = $fetchLib->fetchOne(\Ibs\Shop\Model\ModelTable::class, [
                     'filter' => [
                         '=NAME' => $this->httpVars['MODEL'],
                         '=MANUFACTURER_ID' => $manufacturer['ID'],
@@ -160,7 +147,7 @@ class IbsStoreComponent extends \CBitrixComponent
                     break;
                 }
 
-                $this->resultData = $this->fetchAll(\Ibs\Shop\Model\LaptopTable::class, [
+                $this->resultData = $fetchLib->fetchAll(\Ibs\Shop\Model\LaptopTable::class, [
                     'filter' => ['=MODEL_ID' => $model['ID']],
                     'select' => ['ID', 'NAME', 'YEAR', 'PRICE'],
                     'order' => $this->resultSort,
@@ -176,7 +163,7 @@ class IbsStoreComponent extends \CBitrixComponent
 
                 $notebookName = $this->httpVars['NOTEBOOK'];
 
-                $laptop = $this->fetchOne(\Ibs\Shop\Model\LaptopTable::class, [
+                $laptop = $fetchLib->fetchOne(\Ibs\Shop\Model\LaptopTable::class, [
                     'filter' => ['=NAME' => $notebookName],
                     'select' => ['ID', 'NAME', 'YEAR', 'PRICE', 'MODEL_ID'],
                 ]);
@@ -186,7 +173,7 @@ class IbsStoreComponent extends \CBitrixComponent
                     break;
                 }
 
-                $laptopOptions = $this->fetchAll(\Ibs\Shop\Model\LaptopOptionTable::class, [
+                $laptopOptions = $fetchLib->fetchAll(\Ibs\Shop\Model\LaptopOptionTable::class, [
                     'filter' => ['=LAPTOP_ID' => $laptop['ID']],
                     'select' => ['OPTION_ID_VAL' => 'OPTION.ID', 'OPTION_NAME_VAL' => 'OPTION.NAME'],
                     'runtime' => [
@@ -203,17 +190,25 @@ class IbsStoreComponent extends \CBitrixComponent
                     'laptop' => $laptop,
                     'options' => $laptopOptions,
                 ];
+
+                $this->arResult['DATA'] = $this->resultData;
+
                 break;
 
             default:
                 $this->resultData = [];
                 break;
         }
+
+        if(!$this->resultData) {
+            $this->page = '404';
+        }
+
     }
 
     /*-- Строки --*/
 
-    public function prepareData(): array
+    public function prepareData(): void
     {
         $rsDirContent = new CDBResult;
         $rsDirContent->InitFromArray($this->resultData);
@@ -227,20 +222,12 @@ class IbsStoreComponent extends \CBitrixComponent
         $this->arResult['ROWS_COUNT'] = $this->resultNav->getRecordCount();
 
         $rows = [];
+
         while ($item = $rsDirContent->Fetch()) {
-
-            $url = null;
-            if ($this->page === 'model' && isset($item['ID'])) {
-
-                $sefFolder = rtrim($this->arParams['SEF_FOLDER'], '/');
-                $notebookTemplate = $this->arParams['SEF_URL_TEMPLATES']['notebook'] ?? 'detail/#NOTEBOOK#';
-                $notebookCode = rawurlencode($item['NAME']);
-                $url = $sefFolder . '/' . str_replace('#NOTEBOOK#', $notebookCode, $notebookTemplate);
-            }
 
             $rowData = [
                 'ID' => $item['ID'],
-                'NAME' => Strings::prepareHtml($this->path, $item['NAME'], $url),
+                'NAME' => Strings::prepareHtml($this->path, $item['NAME']),
             ];
 
             if (isset($item['YEAR'])) {
@@ -252,16 +239,17 @@ class IbsStoreComponent extends \CBitrixComponent
 
             $rows[] = ['data' => $rowData];
         }
-        return $rows;
+
+        $this->arResult['ROWS'] = $rows;
     }
 
     /*-- Роутинг --*/
 
     public function setRouting(): void
     {
-        $router = new Router();
+        $this->router = new Router();
 
-        $this->page = $router->resolve(
+        $this->page = $this->router->resolve(
             $this,
             $this->arParams['SEF_FOLDER'],
             $this->arParams['SEF_URL_TEMPLATES'],
@@ -270,6 +258,7 @@ class IbsStoreComponent extends \CBitrixComponent
         );
 
         $this->path = $GLOBALS['APPLICATION']->GetCurDir();
+        $this->arResult['VARS'] = $this->httpVars;
 
     }
 
@@ -278,19 +267,16 @@ class IbsStoreComponent extends \CBitrixComponent
     public function executeComponent(): void
     {
         $this->setRouting();
-        $this->arResult['VARS'] = $this->httpVars;
 
         if ($this->page === 'notebook') {
             $this->getData();
-            $this->arResult['DATA'] = $this->resultData;
         } else {
             $this->setGridId();
-            $this->arResult['GRID_ID'] = $this->gridId;
-            $this->arResult['COLUMNS'] = $this->getColumns();
+            $this->getColumns();
             $this->prepareSort();
             $this->getData();
             $this->prepareNav();
-            $this->arResult['ROWS'] = $this->prepareData();
+            $this->prepareData();
         }
 
         $this->includeComponentTemplate($this->page);

@@ -1,17 +1,13 @@
 <?php
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) { die();
 }
-
-$APPLICATION->SetTitle("Список производителей");
-
 /**
  * Bitrix vars
  * @global CMain $APPLICATION
  * @var $arResult array
  */
-?>
+$APPLICATION->SetTitle("Список производителей");
 
-<?php
 $APPLICATION->IncludeComponent(
     'bitrix:main.ui.grid',
     '',
@@ -46,4 +42,4 @@ $APPLICATION->IncludeComponent(
     ),
     false
 );
-?>
+

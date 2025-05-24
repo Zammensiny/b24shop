@@ -27,7 +27,7 @@ $arComponentParameters = [
                 "index" => "index.php",
                 "brand" => "#BRAND#/",
                 "model" => "#BRAND#/#MODEL#/",
-                "notebook" => "detail/#NOTEBOOK#",
+                "notebook" => "#BRAND#/#MODEL#/#NOTEBOOK#/",
             ],
         ],
     ],

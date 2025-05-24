@@ -1,17 +1,13 @@
 <?php
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) { die();
 }
-
 /**
  * Bitrix vars
  * @global CMain $APPLICATION
  * @var $arResult array
  */
-
 $APPLICATION->SetTitle("Список ноутбуков модели - " . $arResult['VARS']['BRAND'] . '/' . $arResult['VARS']['MODEL']);
-?>
 
-<?php
 $rollbackButton = new \Bitrix\UI\Buttons\Button([
     "color" => \Bitrix\UI\Buttons\Color::PRIMARY,
     "click" => new \Bitrix\UI\Buttons\JsHandler(
@@ -56,4 +52,4 @@ $APPLICATION->IncludeComponent(
     ),
     false
 );
-?>
+

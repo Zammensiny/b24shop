@@ -49,8 +49,27 @@ class ibs_shop extends \CModule
 
     public function InstallFiles($arParams = [])
     {
+        $docRoot = $_SERVER['DOCUMENT_ROOT'];
         $folder = $this->getInstallationFolderName();
-        CopyDirFiles($_SERVER['DOCUMENT_ROOT']."/$folder/modules/".$this->MODULE_ID.'/files', $_SERVER['DOCUMENT_ROOT']."/local", true, true);
+        $modulePath = "$docRoot/$folder/modules/{$this->MODULE_ID}/files";
+
+        /*-- Component --*/
+
+        CopyDirFiles(
+            $modulePath . '/components/ibs',
+            $docRoot . '/local/components/ibs',
+            true,
+            true
+        );
+
+        /*-- Index --*/
+
+        CopyDirFiles(
+            $modulePath . '/store',
+            $docRoot . '/store',
+            true,
+            true
+        );
 
         $this->UrlRewriteAdd();
 

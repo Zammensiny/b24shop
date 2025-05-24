@@ -6,6 +6,10 @@ use CComponentEngine;
 
 class Router
 {
+
+    protected array $urlTemplates = [];
+    protected string $sefFolder = '';
+
     public function resolve($component, $sefFolder, $sefUrlTemplates, $variableAliases, &$httpVars): string
     {
         $engine = new CComponentEngine($component);
