@@ -109,14 +109,13 @@ $laptops = [
     ],
 ];
 
-$options = [
-    'Touchscreen',
-    'Backlit Keyboard',
-    'Fingerprint Sensor',
-    'Face Recognition',
-    'Wi-Fi 6',
-    'Bluetooth 5.2',
-];
+$allOptions = [];
+foreach ($laptops as $laptop) {
+    foreach ($laptop['options'] as $opt) {
+        $allOptions[$opt] = true;
+    }
+}
+$allOptions = array_keys($allOptions);
 
 $manufacturerIds = [];
 foreach ($manufacturers as $item) {
@@ -145,16 +144,18 @@ foreach ($laptops as $item) {
 }
 
 $optionIds = [];
-foreach ($options as $optName) {
+foreach ($allOptions as $optName) {
     $res = OptionTable::add(['NAME' => $optName]);
     $optionIds[$optName] = $res->getId();
 }
 
-foreach ($laptopOptionMap as $laptopName => $opts) {
-    foreach ($opts as $optName) {
+foreach ($laptops as $laptop) {
+    $laptopId = $laptopIds[$laptop['name']];
+    foreach ($laptop['options'] as $optName) {
+        $optionId = $optionIds[$optName];
         LaptopOptionTable::add([
-            'LAPTOP_ID' => $laptopIds[$laptopName],
-            'OPTION_ID' => $optionIds[$optName],
+            'LAPTOP_ID' => $laptopId,
+            'OPTION_ID' => $optionId,
         ]);
     }
 }

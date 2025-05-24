@@ -1,26 +1,14 @@
 <?php
-if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
-    die();
+if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) { die();
 }
+
+$APPLICATION->SetTitle("Список производителей");
 
 /**
  * Bitrix vars
  * @global CMain $APPLICATION
  * @var $arResult array
  */
-
-$APPLICATION->SetTitle("Список моделей производителя - " . $arResult['VARS']['BRAND']);
-
-$rollbackButton = new \Bitrix\UI\Buttons\Button([
-    "color" => \Bitrix\UI\Buttons\Color::PRIMARY,
-    "click" => new \Bitrix\UI\Buttons\JsHandler(
-        "rollback"
-    ),
-    "text" => "Назад"
-]);
-
-\Bitrix\UI\Toolbar\Facade\Toolbar::addButton($rollbackButton);
-
 ?>
 
 <?php

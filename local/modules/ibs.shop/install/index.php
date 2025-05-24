@@ -34,10 +34,26 @@ class ibs_shop extends \CModule
         return end(explode('/', dirname(__DIR__, 3)));
     }
 
+    public function UrlRewriteAdd() {
+
+        $arFields = [
+            "CONDITION" => "#^/store/#",
+            "RULE" => "",
+            "ID" => "ibs:ibs.store",
+            "PATH" => "/store/index.php"
+        ];
+
+        CUrlRewriter::Add($arFields);
+
+    }
+
     public function InstallFiles($arParams = [])
     {
         $folder = $this->getInstallationFolderName();
         CopyDirFiles($_SERVER['DOCUMENT_ROOT']."/$folder/modules/".$this->MODULE_ID.'/files', $_SERVER['DOCUMENT_ROOT']."/local", true, true);
+
+        $this->UrlRewriteAdd();
+
         return true;
     }
 
