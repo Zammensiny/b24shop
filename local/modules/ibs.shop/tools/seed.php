@@ -30,12 +30,83 @@ $models = [
 ];
 
 $laptops = [
-    ['name' => 'MacBook Pro 14 (2023)', 'year' => 2023, 'price' => 2499.99, 'model' => 'MacBook Pro 14'],
-    ['name' => 'MacBook Air M2 (2022)', 'year' => 2022, 'price' => 1299.00, 'model' => 'MacBook Air M2'],
-    ['name' => 'ThinkPad X1 Carbon Gen 11', 'year' => 2023, 'price' => 1800.00, 'model' => 'ThinkPad X1 Carbon'],
-    ['name' => 'Legion 5 Pro RTX 4070', 'year' => 2023, 'price' => 2200.00, 'model' => 'Legion 5 Pro'],
-    ['name' => 'Dell XPS 13 OLED', 'year' => 2023, 'price' => 2100.00, 'model' => 'XPS 13'],
-    ['name' => 'Inspiron 15 Touch', 'year' => 2022, 'price' => 850.00, 'model' => 'Inspiron 15'],
+    [
+        'name' => 'MacBook Pro 14 (2023)',
+        'year' => 2023,
+        'price' => 2499.99,
+        'model' => 'MacBook Pro 14',
+        'options' => ['Backlit Keyboard', 'Fingerprint Sensor', 'Wi-Fi 6'],
+    ],
+    [
+        'name' => 'MacBook Pro 14 (2022)',
+        'year' => 2022,
+        'price' => 2399.00,
+        'model' => 'MacBook Pro 14',
+        'options' => ['Backlit Keyboard', 'Fingerprint Sensor'],
+    ],
+    [
+        'name' => 'MacBook Air M2 (2022)',
+        'year' => 2022,
+        'price' => 1299.00,
+        'model' => 'MacBook Air M2',
+        'options' => ['Backlit Keyboard', 'Wi-Fi 6'],
+    ],
+    [
+        'name' => 'ThinkPad X1 Carbon Gen 11',
+        'year' => 2023,
+        'price' => 1800.00,
+        'model' => 'ThinkPad X1 Carbon',
+        'options' => ['Backlit Keyboard', 'Fingerprint Sensor', 'Bluetooth 5.2'],
+    ],
+    [
+        'name' => 'ThinkPad X1 Carbon Gen 10',
+        'year' => 2022,
+        'price' => 1700.00,
+        'model' => 'ThinkPad X1 Carbon',
+        'options' => ['Backlit Keyboard', 'Fingerprint Sensor'],
+    ],
+    [
+        'name' => 'Legion 5 Pro RTX 4070',
+        'year' => 2023,
+        'price' => 2200.00,
+        'model' => 'Legion 5 Pro',
+        'options' => ['Backlit Keyboard', 'Wi-Fi 6', 'Bluetooth 5.2'],
+    ],
+    [
+        'name' => 'Legion 5 Pro RTX 3060',
+        'year' => 2022,
+        'price' => 1800.00,
+        'model' => 'Legion 5 Pro',
+        'options' => ['Backlit Keyboard', 'Wi-Fi 6'],
+    ],
+    [
+        'name' => 'Dell XPS 13 OLED',
+        'year' => 2023,
+        'price' => 2100.00,
+        'model' => 'XPS 13',
+        'options' => ['Touchscreen', 'Face Recognition', 'Wi-Fi 6'],
+    ],
+    [
+        'name' => 'Dell XPS 13 2022',
+        'year' => 2022,
+        'price' => 2000.00,
+        'model' => 'XPS 13',
+        'options' => ['Touchscreen', 'Wi-Fi 6'],
+    ],
+    [
+        'name' => 'Inspiron 15 Touch',
+        'year' => 2022,
+        'price' => 850.00,
+        'model' => 'Inspiron 15',
+        'options' => ['Touchscreen', 'Wi-Fi 6'],
+    ],
+    [
+        'name' => 'Inspiron 15 Basic',
+        'year' => 2021,
+        'price' => 700.00,
+        'model' => 'Inspiron 15',
+        'options' => ['Wi-Fi 6'],
+    ],
 ];
 
 $options = [
@@ -45,15 +116,6 @@ $options = [
     'Face Recognition',
     'Wi-Fi 6',
     'Bluetooth 5.2',
-];
-
-$laptopOptionMap = [
-    'MacBook Pro 14 (2023)' => ['Backlit Keyboard', 'Fingerprint Sensor', 'Wi-Fi 6'],
-    'MacBook Air M2 (2022)' => ['Backlit Keyboard', 'Wi-Fi 6'],
-    'ThinkPad X1 Carbon Gen 11' => ['Backlit Keyboard', 'Fingerprint Sensor', 'Bluetooth 5.2'],
-    'Legion 5 Pro RTX 4070' => ['Backlit Keyboard', 'Wi-Fi 6', 'Bluetooth 5.2'],
-    'Dell XPS 13 OLED' => ['Touchscreen', 'Face Recognition', 'Wi-Fi 6'],
-    'Inspiron 15 Touch' => ['Touchscreen', 'Wi-Fi 6'],
 ];
 
 $manufacturerIds = [];
